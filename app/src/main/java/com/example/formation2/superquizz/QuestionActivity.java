@@ -25,15 +25,17 @@ public class QuestionActivity extends AppCompatActivity {
 
     View.OnClickListener questionButtonListener =  v -> {
             String reponse = ((Button)v).getText().toString();
-            if(reponse.equals(laQuestion.getBonneReponse())) {
 
+            if(reponse.equals(laQuestion.getBonneReponse())) {
                 Intent intentCorrect = new Intent(QuestionActivity.this, AnswerActivity.class);
                 intentCorrect.putExtra("isCorrect",true);
                 startActivity(intentCorrect);
+
             } else {
                 Intent intentFaux = new Intent(QuestionActivity.this, AnswerActivity.class);
                 intentFaux.putExtra("isCorrect",false);
                 startActivity(intentFaux);
+                
             }
         };
 
@@ -53,8 +55,10 @@ public class QuestionActivity extends AppCompatActivity {
         laQuestion.addProposition("Orleans");
         laQuestion.addProposition("Nantes");
         laQuestion.setBonneReponse("Paris");
+
         List<String> listeProposition = new ArrayList<>();
         listeProposition = laQuestion.getPropositions();
+
         for(String proposition : listeProposition){
             Button buttonQuestion = new Button(this);
             buttonQuestion.setText(proposition);
