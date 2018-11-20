@@ -1,6 +1,7 @@
-package com.example.formation2.superquizz;
+package com.example.formation2.superquizz.ui.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -13,14 +14,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import com.example.formation2.superquizz.R;
+import com.example.formation2.superquizz.ui.fragments.PlayFragment;
+import com.example.formation2.superquizz.ui.fragments.ScoreFragment;
 
-    private Button buttonPlay;
-    View.OnClickListener onClickPlay = v -> {
-            Intent intent = new Intent(MainActivity.this,QuestionActivity.class);
-            startActivity(intent);
-        };
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, PlayFragment.OnFragmentInteractionListener,ScoreFragment.OnFragmentInteractionListener {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // play button
-        buttonPlay = findViewById(R.id.button_play);
-        buttonPlay.setOnClickListener(onClickPlay);
     }
 
     @Override
@@ -85,12 +83,30 @@ public class MainActivity extends AppCompatActivity
 
 
          if (id == R.id.nav_info) {
+
              Intent intent = new Intent(MainActivity.this,InfoActivity.class);
              startActivity(intent);
-        }
+        } else if (id == R.id.nav_play){
+
+             PlayFragment fragment = new PlayFragment();
+             getSupportFragmentManager().beginTransaction()
+                     .replace(R.id.farmelayout_fragment_container, fragment)
+                     .commit();
+         } else if(id == R.id.nav_score){
+
+             ScoreFragment fragment = new ScoreFragment();
+             getSupportFragmentManager().beginTransaction()
+                     .replace(R.id.farmelayout_fragment_container, fragment)
+                     .commit();
+         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

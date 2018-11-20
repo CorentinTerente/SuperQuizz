@@ -1,7 +1,9 @@
-package com.example.formation2.superquizz;
+package com.example.formation2.superquizz.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.formation2.superquizz.R;
 
 
 public class AnswerActivity extends AppCompatActivity {

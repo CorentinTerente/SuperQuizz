@@ -1,4 +1,4 @@
-package com.example.formation2.superquizz;
+package com.example.formation2.superquizz.ui.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import com.example.formation2.superquizz.R;
 
 public class InfoActivity extends AppCompatActivity {
 
