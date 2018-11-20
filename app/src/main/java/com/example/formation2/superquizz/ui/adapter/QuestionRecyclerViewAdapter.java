@@ -1,4 +1,4 @@
-package com.example.formation2.superquizz.ui.fragments;
+package com.example.formation2.superquizz.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +15,6 @@ import java.util.List;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Question} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRecyclerViewAdapter.ViewHolder> {
 

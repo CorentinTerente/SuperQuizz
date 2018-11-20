@@ -13,8 +13,7 @@ import android.view.ViewGroup;
 import com.example.formation2.superquizz.R;
 import com.example.formation2.superquizz.dao.questionDao.QuestionMemDao;
 import com.example.formation2.superquizz.model.Question;
-
-
+import com.example.formation2.superquizz.ui.adapter.QuestionRecyclerViewAdapter;
 
 
 /**
@@ -25,9 +24,9 @@ import com.example.formation2.superquizz.model.Question;
  */
 public class QuestionListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
+
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
+
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
@@ -38,7 +37,6 @@ public class QuestionListFragment extends Fragment {
     public QuestionListFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static QuestionListFragment newInstance(int columnCount) {
         QuestionListFragment fragment = new QuestionListFragment();
@@ -105,7 +103,7 @@ public class QuestionListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onQuestionListSelected(Question item);
     }
 }

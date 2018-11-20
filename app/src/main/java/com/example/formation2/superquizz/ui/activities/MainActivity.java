@@ -23,7 +23,7 @@ import com.example.formation2.superquizz.ui.fragments.ScoreFragment;
 import com.example.formation2.superquizz.ui.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, QuestionListFragment.OnListFragmentInteractionListener,ScoreFragment.OnFragmentInteractionListener,SettingsFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, QuestionListFragment.OnListFragmentInteractionListener {
 
 
     @Override
@@ -123,15 +123,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
-
-    //fix later
     @Override
     public void onQuestionListSelected(Question item) {
         Intent intent = new Intent(MainActivity.this,QuestionActivity.class);
+        intent.putExtra("question",item);
         startActivity(intent);
     }
 }

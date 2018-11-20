@@ -15,9 +15,25 @@ import java.util.List;
 
 public class QuestionActivity extends AppCompatActivity {
     private LinearLayout layout;
-    private Question laQuestion = new Question("Quelle est la capitale de la France ?");
 
-    private  View.OnClickListener questionButtonListener =  v -> {
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_question);
+        TextView questionTextView = new TextView(this);
+
+        Question laQuestion = getIntent().getParcelableExtra("question");
+
+        layout = findViewById(R.id.linear_layout_question);
+
+        questionTextView.setText(laQuestion.getIntitule());
+        questionTextView.setTextSize(25);
+        layout.addView(questionTextView);
+        
+
+        View.OnClickListener questionButtonListener =  v -> {
             String reponse = ((Button)v).getText().toString();
 
             if(reponse.equals(laQuestion.getBonneReponse())) {
@@ -33,25 +49,7 @@ public class QuestionActivity extends AppCompatActivity {
             }
         };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_question);
-        TextView questionTextView = new TextView(this);
-
-        layout = findViewById(R.id.linear_layout_question);
-
-        questionTextView.setText(laQuestion.getIntitule());
-        questionTextView.setTextSize(25);
-        layout.addView(questionTextView);
-
-        laQuestion.addProposition("Paris");
-        laQuestion.addProposition("Orleans");
-        laQuestion.addProposition("Nantes");
-        laQuestion.setBonneReponse("Paris");
-
-        List<String> listeProposition = new ArrayList<>();
-        listeProposition = laQuestion.getPropositions();
+        List<String> listeProposition = laQuestion.getPropositions();
 
         for(String proposition : listeProposition){
             Button buttonQuestion = new Button(this);
