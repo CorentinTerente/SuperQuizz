@@ -16,12 +16,14 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.example.formation2.superquizz.R;
+import com.example.formation2.superquizz.model.Question;
 import com.example.formation2.superquizz.ui.fragments.PlayFragment;
+import com.example.formation2.superquizz.ui.fragments.QuestionListFragment;
 import com.example.formation2.superquizz.ui.fragments.ScoreFragment;
 import com.example.formation2.superquizz.ui.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PlayFragment.OnFragmentInteractionListener,ScoreFragment.OnFragmentInteractionListener,SettingsFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, QuestionListFragment.OnListFragmentInteractionListener,ScoreFragment.OnFragmentInteractionListener,SettingsFragment.OnFragmentInteractionListener {
 
 
     @Override
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            PlayFragment fragment = new PlayFragment();
+            QuestionListFragment fragment= new QuestionListFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.farmelayout_fragment_container, fragment)
                     .commit();
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity
              startActivity(intent);
         } else if (id == R.id.nav_play){
 
-             PlayFragment fragment = new PlayFragment();
+             QuestionListFragment fragment = new QuestionListFragment();
              getSupportFragmentManager().beginTransaction()
                      .replace(R.id.farmelayout_fragment_container, fragment)
                      .commit();
@@ -124,5 +126,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    //fix later
+    @Override
+    public void onQuestionListSelected(Question item) {
+        Intent intent = new Intent(MainActivity.this,QuestionActivity.class);
+        startActivity(intent);
     }
 }
