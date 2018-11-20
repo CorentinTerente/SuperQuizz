@@ -17,9 +17,10 @@ import android.widget.Button;
 import com.example.formation2.superquizz.R;
 import com.example.formation2.superquizz.ui.fragments.PlayFragment;
 import com.example.formation2.superquizz.ui.fragments.ScoreFragment;
+import com.example.formation2.superquizz.ui.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PlayFragment.OnFragmentInteractionListener,ScoreFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PlayFragment.OnFragmentInteractionListener,ScoreFragment.OnFragmentInteractionListener,SettingsFragment.OnFragmentInteractionListener {
 
 
 
@@ -95,6 +96,12 @@ public class MainActivity extends AppCompatActivity
          } else if(id == R.id.nav_score){
 
              ScoreFragment fragment = new ScoreFragment();
+             getSupportFragmentManager().beginTransaction()
+                     .replace(R.id.farmelayout_fragment_container, fragment)
+                     .commit();
+         } else if (id == R.id.nav_settings) {
+
+             SettingsFragment fragment = new SettingsFragment();
              getSupportFragmentManager().beginTransaction()
                      .replace(R.id.farmelayout_fragment_container, fragment)
                      .commit();
