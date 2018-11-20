@@ -1,21 +1,13 @@
 package com.example.formation2.superquizz;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.example.formation2.superquizz.dao.questionDao.QuestionMemDao;
 import com.example.formation2.superquizz.model.Question;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +15,7 @@ public class QuestionActivity extends AppCompatActivity {
     private LinearLayout layout;
     private Question laQuestion = new Question("Quelle est la capitale de la France ?");
 
-    View.OnClickListener questionButtonListener =  v -> {
+    private  View.OnClickListener questionButtonListener =  v -> {
             String reponse = ((Button)v).getText().toString();
 
             if(reponse.equals(laQuestion.getBonneReponse())) {
@@ -35,7 +27,7 @@ public class QuestionActivity extends AppCompatActivity {
                 Intent intentFaux = new Intent(QuestionActivity.this, AnswerActivity.class);
                 intentFaux.putExtra("isCorrect",false);
                 startActivity(intentFaux);
-                
+
             }
         };
 
