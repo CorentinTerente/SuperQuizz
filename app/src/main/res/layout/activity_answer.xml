@@ -6,9 +6,9 @@
     tools:context=".ui.activities.AnswerActivity">
 
     <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/imagebutton_return"
+        android:id="@+id/image_button_return"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/checkmark"/>
+        android:src="@drawable/check_mark"/>
 
 </android.support.design.widget.CoordinatorLayout>

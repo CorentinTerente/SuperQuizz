@@ -6,7 +6,7 @@ import java.util.List;
 import com.example.formation2.superquizz.model.Question;
 
 public class QuestionMemDao implements QuestionDao{
-	List<Question> listeQuestion = new ArrayList<>();
+	private final List<Question> listeQuestion = new ArrayList<>();
 
 	public QuestionMemDao(){
 		Question question1 = new Question("Quelle est la capitale de la Fance ?");

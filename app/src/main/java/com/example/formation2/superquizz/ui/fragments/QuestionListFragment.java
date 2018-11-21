@@ -2,6 +2,7 @@ package com.example.formation2.superquizz.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,9 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.formation2.superquizz.R;
-import com.example.formation2.superquizz.dao.questionDao.QuestionMemDao;
 import com.example.formation2.superquizz.model.Question;
 import com.example.formation2.superquizz.ui.adapter.QuestionRecyclerViewAdapter;
+
+import static com.example.formation2.superquizz.ui.activities.MainActivity.questionList;
 
 
 /**
@@ -56,10 +58,10 @@ public class QuestionListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question_list, container, false);
-        QuestionMemDao questionList = new QuestionMemDao();
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();

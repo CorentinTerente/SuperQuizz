@@ -1,10 +1,8 @@
 package com.example.formation2.superquizz.ui.activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuInflater;
-import android.view.View;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,11 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 
 import com.example.formation2.superquizz.R;
+import com.example.formation2.superquizz.dao.questionDao.QuestionMemDao;
 import com.example.formation2.superquizz.model.Question;
-import com.example.formation2.superquizz.ui.fragments.PlayFragment;
+import com.example.formation2.superquizz.ui.fragments.CreateFragment;
 import com.example.formation2.superquizz.ui.fragments.QuestionListFragment;
 import com.example.formation2.superquizz.ui.fragments.ScoreFragment;
 import com.example.formation2.superquizz.ui.fragments.SettingsFragment;
@@ -25,7 +23,7 @@ import com.example.formation2.superquizz.ui.fragments.SettingsFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, QuestionListFragment.OnListFragmentInteractionListener {
 
-
+    public static QuestionMemDao questionList =  new QuestionMemDao();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -115,6 +113,12 @@ public class MainActivity extends AppCompatActivity
              SettingsFragment fragment = new SettingsFragment();
              getSupportFragmentManager().beginTransaction()
                      .replace(R.id.farmelayout_fragment_container, fragment)
+                     .commit();
+         } else if (id == R.id.nav_add) {
+
+             CreateFragment fragment = new CreateFragment();
+             getSupportFragmentManager().beginTransaction()
+                     .replace(R.id.farmelayout_fragment_container,fragment)
                      .commit();
          }
 

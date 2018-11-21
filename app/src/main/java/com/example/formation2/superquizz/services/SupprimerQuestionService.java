@@ -4,6 +4,7 @@ import com.example.formation2.superquizz.dao.questionDao.QuestionDao;
 import com.example.formation2.superquizz.model.Question;
 
 
+@SuppressWarnings("ConstantConditions")
 public class SupprimerQuestionService extends MenuService {
 
 	@Override

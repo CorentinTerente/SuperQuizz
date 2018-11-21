@@ -10,4 +10,6 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.fragments.QuestionListFragment"
-    tools:listitem="@layout/fragment_question" />
+    tools:listitem="@layout/fragment_question"
+    android:padding="15dp"
+    android:paddingBottom="20dp"/>

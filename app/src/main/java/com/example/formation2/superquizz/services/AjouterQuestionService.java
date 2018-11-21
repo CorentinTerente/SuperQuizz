@@ -1,14 +1,13 @@
 package com.example.formation2.superquizz.services;
 
-import java.util.Scanner;
 import com.example.formation2.superquizz.dao.questionDao.*;
 
-import com.example.formation2.superquizz.model.*;
 
-
+@SuppressWarnings("ALL")
 public class AjouterQuestionService extends MenuService{
 
-	@Override
+	@SuppressWarnings("unused")
+    @Override
 	public void executeUC(QuestionDao dao) {
 		System.out.println("Question SIMPLE ou BONUS ?");
 		String typeQuestion;

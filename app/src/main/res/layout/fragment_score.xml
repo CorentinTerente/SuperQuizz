@@ -10,14 +10,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Score actuelle"
+        android:text="@string/actual_score_text"
         android:textSize="50sp"
         android:textAlignment="center"/>
     <TextView
         android:id="@+id/textview_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0/20"
+        android:text="@string/actual_score_default_value"
         android:textSize="50sp"
         android:textAlignment="center"/>
 
