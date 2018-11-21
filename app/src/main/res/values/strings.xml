@@ -13,9 +13,8 @@
     <string name="developer_name">Developed by Corentin TERENTE</string>
     <string name="dial">DIAL</string>
     <string name="mail">MAIL</string>
-    <string name="play">PLAY</string>
     <string name="dash">-</string>
-    <string name="actual_score_text">Score actuelle</string>
+    <string name="actual_score_text">Actual score</string>
     <string name="actual_score_default_value">0/20</string>
     <string name="settings">Settings</string>
     <string name="nav_play">Play</string>
@@ -23,7 +22,12 @@
     <string name="nav_info">Info</string>
     <string name="nav_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="nav_add">Add Question</string>
+    <string name="tel_number">tel:0066666666</string>
+    <string name="email_address">mailto:emailaddress@emailaddress.com</string>
+    <string name="toast_checked">Must check a proposition</string>
+    <string name="toast_empty">Text field should no be empty</string>
+    <string name="question_title">Question Title</string>
+    <string name="question_response_proposition">Question Response Proposition</string>
 </resources>

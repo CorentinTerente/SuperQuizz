@@ -20,57 +20,63 @@ public class QuestionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
-        TextView questionTextView = new TextView(this);
+        TextView textViewTitle = findViewById(R.id.text_view_question_title);
+        Question aQuestion = getIntent().getParcelableExtra("question");
 
-        Question laQuestion = getIntent().getParcelableExtra("question");
+        LinearLayout questionButtonLayout1 = findViewById(R.id.linear_layout_button_1row);
+        LinearLayout questionButtonLayout2 = findViewById(R.id.linear_layout_button_2row);
 
-        LinearLayout layout = findViewById(R.id.linear_layout_question);
 
-        questionTextView.setText(laQuestion.getIntitule());
-        questionTextView.setTextSize(25);
-        layout.addView(questionTextView);
+        textViewTitle.setText(aQuestion.getTitle());
 
 
         View.OnClickListener questionButtonListener =  v -> {
-            String reponse = ((Button)v).getText().toString();
+            String response = ((Button)v).getText().toString();
 
-            if(reponse.equals(laQuestion.getBonneReponse())) {
-                Intent intentCorrect = new Intent(QuestionActivity.this, AnswerActivity.class);
-                intentCorrect.putExtra("isCorrect",true);
-                startActivity(intentCorrect);
+            if(response.equals(aQuestion.getGoodResponse())) {
+                Intent intentSuccess= new Intent(QuestionActivity.this, AnswerActivity.class);
+                intentSuccess.putExtra("isCorrect",true);
+                startActivity(intentSuccess);
 
             } else {
-                Intent intentFaux = new Intent(QuestionActivity.this, AnswerActivity.class);
-                intentFaux.putExtra("isCorrect",false);
-                startActivity(intentFaux);
+                Intent intentFail = new Intent(QuestionActivity.this, AnswerActivity.class);
+                intentFail.putExtra("isCorrect",false);
+                startActivity(intentFail);
 
             }
         };
 
-        List<String> listeProposition = laQuestion.getPropositions();
+        List<String> propositionsList = aQuestion.getPropositions();
 
-        for(String proposition : listeProposition){
+        // for each proposition generate a button with different color
+        for(String proposition : propositionsList){
 
             Button buttonQuestion = new Button(this);
             buttonQuestion.setText(proposition);
             buttonQuestion.setOnClickListener(questionButtonListener);
             buttonQuestion.setWidth(250);
             buttonQuestion.setHeight(250);
-            buttonQuestion.setPadding(20,20,20,20);
-            layout.addView(buttonQuestion);
 
-            switch(listeProposition.indexOf(proposition)){
-                case 0 : buttonQuestion.setBackgroundColor(getResources().getColor(R.color.red));
-                    buttonQuestion.setTextColor(getResources().getColor(R.color.white));
+            switch(propositionsList.indexOf(proposition)){
+                case 0 :
+                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.red,null));
+                    buttonQuestion.setTextColor(getResources().getColor(R.color.white,null));
+                    questionButtonLayout1.addView(buttonQuestion);
                 break;
-                case 1 : buttonQuestion.setBackgroundColor(getResources().getColor(R.color.blue));
-                    buttonQuestion.setTextColor(getResources().getColor(R.color.white));
+                case 1 :
+                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.blue,null));
+                    buttonQuestion.setTextColor(getResources().getColor(R.color.white,null));
+                    questionButtonLayout1.addView(buttonQuestion);
                     break;
-                case 2 : buttonQuestion.setBackgroundColor(getResources().getColor(R.color.green));
-                    buttonQuestion.setTextColor(getResources().getColor(R.color.white));
+                case 2 :
+                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.green,null));
+                    buttonQuestion.setTextColor(getResources().getColor(R.color.white,null));
+                    questionButtonLayout2.addView(buttonQuestion);
                     break;
-                case 3 : buttonQuestion.setBackgroundColor(getResources().getColor(R.color.purple));
-                    buttonQuestion.setTextColor(getResources().getColor(R.color.white));
+                case 3 :
+                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.purple,null));
+                    buttonQuestion.setTextColor(getResources().getColor(R.color.white,null));
+                    questionButtonLayout2.addView(buttonQuestion);
             }
         }
 

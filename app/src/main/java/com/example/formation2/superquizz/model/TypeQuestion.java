@@ -1,6 +1,6 @@
 package com.example.formation2.superquizz.model;
 
 public enum TypeQuestion {
-	SIMPLE,
-	BONUS
+	@SuppressWarnings("unused") SIMPLE,
+	@SuppressWarnings("unused") BONUS
 }

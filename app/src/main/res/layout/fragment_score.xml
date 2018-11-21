@@ -14,7 +14,7 @@
         android:textSize="50sp"
         android:textAlignment="center"/>
     <TextView
-        android:id="@+id/textview_score"
+        android:id="@+id/text_view_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/actual_score_default_value"

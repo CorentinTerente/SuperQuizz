@@ -20,8 +20,9 @@ import com.example.formation2.superquizz.ui.fragments.QuestionListFragment;
 import com.example.formation2.superquizz.ui.fragments.ScoreFragment;
 import com.example.formation2.superquizz.ui.fragments.SettingsFragment;
 
+@SuppressWarnings("CanBeFinal")
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, QuestionListFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, QuestionListFragment.OnListFragmentInteractionListener, CreateFragment.OnCreateListener {
 
     public static QuestionMemDao questionList =  new QuestionMemDao();
     @Override
@@ -41,12 +42,13 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //default fragment is QuestionListFragment
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             QuestionListFragment fragment= new QuestionListFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.farmelayout_fragment_container, fragment)
+                    .add(R.id.frame_layout_fragment_container, fragment)
                     .commit();
         }
 
@@ -91,7 +93,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
-
          if (id == R.id.nav_info) {
 
              Intent intent = new Intent(MainActivity.this,InfoActivity.class);
@@ -100,25 +101,26 @@ public class MainActivity extends AppCompatActivity
 
              QuestionListFragment fragment = new QuestionListFragment();
              getSupportFragmentManager().beginTransaction()
-                     .replace(R.id.farmelayout_fragment_container, fragment)
+                     .replace(R.id.frame_layout_fragment_container, fragment)
                      .commit();
          } else if(id == R.id.nav_score){
 
              ScoreFragment fragment = new ScoreFragment();
              getSupportFragmentManager().beginTransaction()
-                     .replace(R.id.farmelayout_fragment_container, fragment)
+                     .replace(R.id.frame_layout_fragment_container, fragment)
                      .commit();
          } else if (id == R.id.nav_settings) {
 
              SettingsFragment fragment = new SettingsFragment();
              getSupportFragmentManager().beginTransaction()
-                     .replace(R.id.farmelayout_fragment_container, fragment)
+                     .replace(R.id.frame_layout_fragment_container, fragment)
                      .commit();
          } else if (id == R.id.nav_add) {
 
              CreateFragment fragment = new CreateFragment();
+             fragment.listener = this;
              getSupportFragmentManager().beginTransaction()
-                     .replace(R.id.farmelayout_fragment_container,fragment)
+                     .replace(R.id.frame_layout_fragment_container,fragment)
                      .commit();
          }
 
@@ -133,5 +135,15 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(MainActivity.this,QuestionActivity.class);
         intent.putExtra("question",item);
         startActivity(intent);
+    }
+
+    @Override
+    public void questionCreated(Question q) {
+        questionList.save(q);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout_fragment_container,QuestionListFragment.newInstance(1))
+                .commit();
+
     }
 }

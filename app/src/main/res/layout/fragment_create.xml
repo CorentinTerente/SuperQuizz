@@ -10,7 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edit_text_title"
-        android:layout_margin="25dp"/>
+        android:layout_margin="25dp"
+        android:inputType="text"
+        android:imeOptions="actionNext"
+        android:nextFocusForward="@id/edit_text_proposition1"
+        android:hint="@string/question_title"
+        tools:ignore="Autofill" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +29,12 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/edit_text_proposition1"/>
+                android:id="@+id/edit_text_proposition1"
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@id/edit_text_proposition2"
+                android:hint="@string/question_response_proposition"
+                tools:ignore="Autofill" />
 
     </LinearLayout>
     <LinearLayout
@@ -40,7 +50,12 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_text_proposition2"/>
+            android:id="@+id/edit_text_proposition2"
+            android:inputType="text"
+            android:imeOptions="actionNext"
+            android:nextFocusForward="@id/edit_text_proposition3"
+            android:hint="@string/question_response_proposition"
+            tools:ignore="Autofill" />
 
     </LinearLayout>
     <LinearLayout
@@ -56,7 +71,12 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_text_proposition3"/>
+            android:id="@+id/edit_text_proposition3"
+            android:inputType="text"
+            android:imeOptions="actionNext"
+            android:nextFocusForward="@id/edit_text_proposition4"
+            android:hint="@string/question_response_proposition"
+            tools:ignore="Autofill" />
 
     </LinearLayout>
     <LinearLayout
@@ -72,7 +92,11 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_text_proposition4"/>
+            android:id="@+id/edit_text_proposition4"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:hint="@string/question_response_proposition"
+            tools:ignore="Autofill" />
 
     </LinearLayout>
 

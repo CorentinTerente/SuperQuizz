@@ -39,7 +39,6 @@ public class QuestionListFragment extends Fragment {
     public QuestionListFragment() {
     }
 
-    @SuppressWarnings("unused")
     public static QuestionListFragment newInstance(int columnCount) {
         QuestionListFragment fragment = new QuestionListFragment();
         Bundle args = new Bundle();

@@ -14,15 +14,13 @@ public class InfoActivity extends AppCompatActivity {
     private final OnClickListener onClickDial = v -> {
 
             Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:0066666666"));
+            intent.setData(Uri.parse(getString(R.string.tel_number)));
             startActivity(intent);
         };
 
     private final OnClickListener onClickMail = v -> {
 
-        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:emailaddress@emailaddress.com"));
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-        intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse(getString(R.string.email_address)));
 
         startActivity(intent);
     };

@@ -38,15 +38,15 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mContentView.setText(mValues.get(position).getIntitule());
+        holder.mContentView.setText(mValues.get(position).getTitle());
 
-        holder.mView.setOnClickListener( v ->{
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onQuestionListSelected(holder.mItem);
+        holder.mView.setOnClickListener(v -> {
+                    if (null != mListener) {
+                        // Notify the active callbacks interface (the activity, if the
+                        // fragment is attached to one) that an item has been selected.
+                        mListener.onQuestionListSelected(holder.mItem);
+                    }
                 }
-            }
         );
     }
 
@@ -55,6 +55,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
         return mValues.size();
     }
 
+    @SuppressWarnings("WeakerAccess")
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
 
@@ -67,10 +68,5 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             mContentView = view.findViewById(R.id.content);
         }
 
-        @NonNull
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
-        }
     }
 }

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress CheckTagEmptyBody -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.formation2.superquizz">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.formation2.superquizz"
+    tools:ignore="GoogleAppIndexingWarning">
 
     <application
         android:allowBackup="true"
