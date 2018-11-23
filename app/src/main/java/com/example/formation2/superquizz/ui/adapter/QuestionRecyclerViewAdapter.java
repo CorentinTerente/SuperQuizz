@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.formation2.superquizz.R;
-import com.example.formation2.superquizz.dao.questionDao.QuestionMemDao;
 import com.example.formation2.superquizz.model.Question;
 import com.example.formation2.superquizz.ui.fragments.QuestionListFragment.OnListFragmentInteractionListener;
 import java.util.List;
@@ -22,8 +21,8 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     private final List<Question> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public QuestionRecyclerViewAdapter(QuestionMemDao questionList, OnListFragmentInteractionListener listener) {
-        mValues = questionList.findAll();
+    public QuestionRecyclerViewAdapter(List<Question> questionList, OnListFragmentInteractionListener listener) {
+        mValues = questionList;
         mListener = listener;
     }
 

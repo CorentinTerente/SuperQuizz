@@ -11,20 +11,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.formation2.superquizz.R;
-import com.example.formation2.superquizz.dao.questionDao.QuestionMemDao;
+import com.example.formation2.superquizz.api.APIClient;
+import com.example.formation2.superquizz.database.QuestionsDatabaseHelper;
 import com.example.formation2.superquizz.model.Question;
 import com.example.formation2.superquizz.ui.fragments.CreateFragment;
 import com.example.formation2.superquizz.ui.fragments.QuestionListFragment;
 import com.example.formation2.superquizz.ui.fragments.ScoreFragment;
 import com.example.formation2.superquizz.ui.fragments.SettingsFragment;
 
+import java.io.IOException;
+import java.util.List;
+
 @SuppressWarnings("CanBeFinal")
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, QuestionListFragment.OnListFragmentInteractionListener, CreateFragment.OnCreateListener {
 
-    public static QuestionMemDao questionList =  new QuestionMemDao();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,23 @@ public class MainActivity extends AppCompatActivity
 
         //default fragment is QuestionListFragment
         if (savedInstanceState == null) {
+
+            Toast loadToast = Toast.makeText(this,"Can't load questions from server",Toast.LENGTH_SHORT);
+            APIClient client = APIClient.getInstance();
+            client.getQuestions(new APIClient.APIResult<List<Question>>() {
+                @Override
+                public void onFailure(IOException e) {
+                    loadToast.show();
+                }
+
+                @Override
+                public void OnSuccess(List<Question> object) throws IOException {
+                    for(Question newQuestion : object) {
+                        QuestionsDatabaseHelper.getInstance(getApplicationContext()).addQuestion(newQuestion);
+                    }
+                }
+            });
+
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             QuestionListFragment fragment= new QuestionListFragment();
@@ -139,7 +160,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void questionCreated(Question q) {
-        questionList.save(q);
+
+        QuestionsDatabaseHelper questionDb = QuestionsDatabaseHelper.getInstance(this);
+        questionDb.addQuestion(q);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout_fragment_container,QuestionListFragment.newInstance(1))

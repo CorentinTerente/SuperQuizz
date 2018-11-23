@@ -8,6 +8,16 @@
     android:orientation="vertical"
     >
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="100"
+        android:layout_margin="15dp"
+        />
+
     <TextView
         android:id="@+id/text_view_question_title"
         android:layout_width="match_parent"

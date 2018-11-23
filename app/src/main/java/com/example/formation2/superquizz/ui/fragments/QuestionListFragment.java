@@ -12,10 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.formation2.superquizz.R;
+import com.example.formation2.superquizz.database.QuestionsDatabaseHelper;
 import com.example.formation2.superquizz.model.Question;
 import com.example.formation2.superquizz.ui.adapter.QuestionRecyclerViewAdapter;
 
-import static com.example.formation2.superquizz.ui.activities.MainActivity.questionList;
+import java.util.List;
 
 
 /**
@@ -60,7 +61,8 @@ public class QuestionListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question_list, container, false);
-
+        QuestionsDatabaseHelper questionDb = QuestionsDatabaseHelper.getInstance(this.getContext());
+        List<Question> questionList = questionDb.getUnAnsweredQuestion();
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();

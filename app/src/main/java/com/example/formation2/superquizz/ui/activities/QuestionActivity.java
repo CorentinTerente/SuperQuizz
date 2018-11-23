@@ -1,27 +1,36 @@
 package com.example.formation2.superquizz.ui.activities;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.formation2.superquizz.R;
+import com.example.formation2.superquizz.database.QuestionsDatabaseHelper;
 import com.example.formation2.superquizz.model.Question;
+import com.example.formation2.superquizz.ui.threads.DelayTask;
 
 import java.util.List;
 
-public class QuestionActivity extends AppCompatActivity {
+public class QuestionActivity extends AppCompatActivity implements DelayTask.OnDelayTaskListener {
 
-
+    private DelayTask delayProgressBar = new DelayTask(this);
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
         TextView textViewTitle = findViewById(R.id.text_view_question_title);
         Question aQuestion = getIntent().getParcelableExtra("question");
+        progressBar = findViewById(R.id.progress_bar);
 
         LinearLayout questionButtonLayout1 = findViewById(R.id.linear_layout_button_1row);
         LinearLayout questionButtonLayout2 = findViewById(R.id.linear_layout_button_2row);
@@ -32,8 +41,10 @@ public class QuestionActivity extends AppCompatActivity {
 
         View.OnClickListener questionButtonListener =  v -> {
             String response = ((Button)v).getText().toString();
-
-            if(response.equals(aQuestion.getGoodResponse())) {
+            aQuestion.setUserResponse(response);
+            QuestionsDatabaseHelper questionDb = QuestionsDatabaseHelper.getInstance(this);
+            questionDb.updateQuestion(aQuestion);
+            if(aQuestion.verifyResponse(response)) {
                 Intent intentSuccess= new Intent(QuestionActivity.this, AnswerActivity.class);
                 intentSuccess.putExtra("isCorrect",true);
                 startActivity(intentSuccess);
@@ -79,7 +90,22 @@ public class QuestionActivity extends AppCompatActivity {
                     questionButtonLayout2.addView(buttonQuestion);
             }
         }
+    delayProgressBar.execute();
 
+    }
 
+    @Override
+    public void onProgressTask(int progress) {
+        progressBar.setProgress(progress * 6);
+    }
+
+    @Override
+    public void onFinishTask() {
+
+    }
+
+    @Override
+    public void onStartingTask() {
+        progressBar.setVisibility(ProgressBar.VISIBLE);
     }
 }

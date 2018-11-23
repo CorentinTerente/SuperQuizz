@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.formation2.superquizz"
     tools:ignore="GoogleAppIndexingWarning">
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -13,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor">
+
         <activity
             android:name=".ui.activities.MainActivity"
             android:label="@string/app_name"

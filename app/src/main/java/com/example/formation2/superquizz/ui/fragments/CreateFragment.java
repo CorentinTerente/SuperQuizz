@@ -112,17 +112,19 @@ public class CreateFragment extends Fragment {
         newQuestion.addProposition(proposition3);
         newQuestion.addProposition(proposition4);
 
-        if(rButton1.isChecked()){
-            newQuestion.setGoodResponse(proposition1);
-        } else if (rButton2.isChecked()) {
-            newQuestion.setGoodResponse(proposition2);
-        } else if (rButton3.isChecked()) {
-            newQuestion.setGoodResponse(proposition3);
-        } else if (rButton4.isChecked()) {
-            newQuestion.setGoodResponse(proposition4);
-        } else {
-            nothingChecked = true;
-        }
+
+            if (rButton1.isChecked()) {
+                newQuestion.setGoodResponse(1);
+            } else if (rButton2.isChecked()) {
+                newQuestion.setGoodResponse(2);
+            } else if (rButton3.isChecked()) {
+                newQuestion.setGoodResponse(3);
+            } else if (rButton4.isChecked()) {
+                newQuestion.setGoodResponse(4);
+            } else {
+                nothingChecked = true;
+            }
+
 
         if(nothingChecked) {
             toastChecked.show();

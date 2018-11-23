@@ -9,11 +9,13 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class Question implements Parcelable {
-	
+
+	private long questionId;
 	private String title;
 	private ArrayList<String> propositions;
-	private String goodResponse;
+	private int goodResponse;
 	private TypeQuestion questionType;
+	private String userResponse;
 	
 	public Question(String title) {
 		this.title = title;
@@ -24,7 +26,7 @@ public class Question implements Parcelable {
 	protected Question(Parcel in) {
 		title = in.readString();
 		propositions = in.createStringArrayList();
-		goodResponse = in.readString();
+		goodResponse = in.readInt();
 	}
 
 	public static final Creator<Question> CREATOR = new Creator<Question>() {
@@ -51,20 +53,32 @@ public class Question implements Parcelable {
 	public void setPropositions(ArrayList<String> propositions) {
 		this.propositions = propositions;
 	}
-	public String getGoodResponse() {
+	public int getGoodResponse() {
 		return goodResponse;
 	}
-	public void setGoodResponse(String goodResponse) {
-		for(String proposition : propositions) {
-			if(proposition.equals(goodResponse)) {
-				this.goodResponse = goodResponse;
-			}
-		}
+	public void setGoodResponse(int goodResponse) {
+                    this.goodResponse = goodResponse;
 			
 	}
-	
+
+    public long getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(long questionId) {
+        this.questionId = questionId;
+    }
+
+    public String getUserResponse() {
+        return userResponse;
+    }
+
+    public void setUserResponse(String userResponse) {
+        this.userResponse = userResponse;
+    }
+
 	public boolean verifyResponse(String response) {
-		return goodResponse.equals(response);
+		return this.getPropositions().get(goodResponse).equals(response);
 	}
 	
 	public void addProposition(String proposition) {
@@ -93,6 +107,6 @@ public class Question implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(title);
 		dest.writeStringList(propositions);
-		dest.writeString(goodResponse);
+		dest.writeInt(goodResponse);
 	}
 }

@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS qcm;
+CREATE TABLE qcm (question_id int PRIMARY KEY, question_title VARCHAR(100), answer1 VARCHAR(100), answer2 VARCHAR(100), answer3 VARCHAR(100),answer4 VARCHAR(100), good_answer VARCHAR(100), user_answer VARCHAR(100));
+INSERT INTO qcm (question_title, answer1, answer2, answer3, answer4, good_answer, user_answer) VALUES ("Quelle est la capitale de la France ?","Paris","Berlin","Nantes","Orleans","Paris","Paris");
+INSERT INTO qcm (question_title, answer1, answer2, answer3, answer4, good_answer, user_answer) VALUES ("Quelle est la capitale de l'Allemagne ?","Paris","Berlin","Nantes","Orleans","Berlin","Nantes");
+
+SELECT ROWID, * FROM qcm

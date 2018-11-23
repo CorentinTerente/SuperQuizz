@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "812097014933",
+    "firebase_url": "https://superquizz-9fc1c.firebaseio.com",
+    "project_id": "superquizz-9fc1c",
+    "storage_bucket": "superquizz-9fc1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812097014933:android:c11bcd0cbb0bc121",
+        "android_client_info": {
+          "package_name": "com.example.formation2.superquizz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812097014933-kh7qd2ci35ihkrpp9pisgug66bu0iqrh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfdhorTYPuIi_xqFpujKDjq5Z85rUcwMw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
