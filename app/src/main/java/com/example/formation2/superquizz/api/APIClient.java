@@ -89,8 +89,32 @@ public class APIClient {
         });
 
         //TODO : Faire un update
-        //TODO : Faire un delete
     }
+
+    public void deleteQuestion(final APIResult<Question> result, Question q){
+        JSONObject json = new JSONObject();
+        try {
+            json = parseQuestionToJSON(q);
+        } catch (JSONException e){
+            Log.e("ERROR","Can't parse question to JSON");
+        }
+
+        Request request = new Request.Builder()
+                .url(localUrl+"/questions").method("DELETE", RequestBody.create(JSON_TYPE,json.toString()))
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                result.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                result.OnSuccess(q);
+            }
+        });
+    }
+
 
     public void createQuestion(final APIResult<Question> result,Question q){
         Question newQuestion = new Question();
