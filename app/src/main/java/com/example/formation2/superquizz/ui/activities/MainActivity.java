@@ -3,12 +3,14 @@ package com.example.formation2.superquizz.ui.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -50,7 +52,9 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
 
             Toast loadToast = Toast.makeText(this,"Can't load questions from server",Toast.LENGTH_SHORT);
+            Toast alreadyExistsToast = Toast.makeText(this,"Question already exists",Toast.LENGTH_SHORT);
             APIClient client = APIClient.getInstance();
+
             client.getQuestions(new APIClient.APIResult<List<Question>>() {
                 @Override
                 public void onFailure(IOException e) {
@@ -60,7 +64,12 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void OnSuccess(List<Question> object) throws IOException {
                     for(Question newQuestion : object) {
-                        QuestionsDatabaseHelper.getInstance(getApplicationContext()).addQuestion(newQuestion);
+                        try {
+                            QuestionsDatabaseHelper.getInstance(getApplicationContext()).addQuestion(newQuestion);
+                        } catch (Exception  e) {
+                            alreadyExistsToast.show();
+                        }
+
                     }
                 }
             });
@@ -71,6 +80,8 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.frame_layout_fragment_container, fragment)
                     .commit();
+
+
         }
 
     }
@@ -160,9 +171,26 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void questionCreated(Question q) {
+        Toast toastFailCreate = Toast.makeText(getApplicationContext(),"Can't add question to database", Toast.LENGTH_SHORT);
+        APIClient.getInstance().createQuestion(new APIClient.APIResult<Question>(){
+            @Override
+            public void onFailure(IOException e) {
+                toastFailCreate.show();
+            }
 
-        QuestionsDatabaseHelper questionDb = QuestionsDatabaseHelper.getInstance(this);
-        questionDb.addQuestion(q);
+            @Override
+            public void OnSuccess(Question object) throws IOException {
+                QuestionsDatabaseHelper questionDb = QuestionsDatabaseHelper.getInstance(getApplicationContext());
+                try {
+                    questionDb.addQuestion(object);
+                } catch (Exception e){
+                    Log.e("ERROR","Can't insert");
+                }
+            }
+        },q);
+
+
+
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout_fragment_container,QuestionListFragment.newInstance(1))

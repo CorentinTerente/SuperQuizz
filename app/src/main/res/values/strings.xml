@@ -30,4 +30,5 @@
     <string name="toast_empty">Text field should no be empty</string>
     <string name="question_title">Question Title</string>
     <string name="question_response_proposition">Question Response Proposition</string>
+    <string name="base_url">http://192.168.10.38:3000</string>
 </resources>

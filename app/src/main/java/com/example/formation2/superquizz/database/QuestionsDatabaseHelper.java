@@ -69,29 +69,36 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addQuestion(Question newQuestion) {
+    public void addQuestion(Question newQuestion) throws Exception {
+
+        if(newQuestion.getQuestionId() == this.getQuestion(newQuestion.getQuestionId()).getQuestionId()) {
+            throw new Exception("already exists");
+        }
 
         SQLiteDatabase db = getWritableDatabase();
 
+
         db.beginTransaction();
         try {
-            String questionTitle = newQuestion.getTitle();
-            String questionAnswer1 = newQuestion.getPropositions().get(0);
-            String questionAnswer2 = newQuestion.getPropositions().get(1);
-            String questionAnswer3 = newQuestion.getPropositions().get(2);
-            String questionAnswer4 = newQuestion.getPropositions().get(3);
-            int questionGoodAnswer = newQuestion.getGoodResponse();
 
-            ContentValues values = new ContentValues();
-            values.put(KEY_QUESTION_TITLE, questionTitle);
-            values.put(KEY_QUESTION_ANSWER1, questionAnswer1);
-            values.put(KEY_QUESTION_ANSWER2, questionAnswer2);
-            values.put(KEY_QUESTION_ANSWER3, questionAnswer3);
-            values.put(KEY_QUESTION_ANSWER4, questionAnswer4);
-            values.put(KEY_QUESTION_GOOD_ANSWER, questionGoodAnswer);
+                String questionTitle = newQuestion.getTitle();
+                String questionAnswer1 = newQuestion.getPropositions().get(0);
+                String questionAnswer2 = newQuestion.getPropositions().get(1);
+                String questionAnswer3 = newQuestion.getPropositions().get(2);
+                String questionAnswer4 = newQuestion.getPropositions().get(3);
+                int questionGoodAnswer = newQuestion.getGoodResponse();
 
-            db.insertOrThrow(TABLE_QUESTION, null, values);
-            db.setTransactionSuccessful();
+                ContentValues values = new ContentValues();
+                values.put(KEY_QUESTION_TITLE, questionTitle);
+                values.put(KEY_QUESTION_ANSWER1, questionAnswer1);
+                values.put(KEY_QUESTION_ANSWER2, questionAnswer2);
+                values.put(KEY_QUESTION_ANSWER3, questionAnswer3);
+                values.put(KEY_QUESTION_ANSWER4, questionAnswer4);
+                values.put(KEY_QUESTION_GOOD_ANSWER, questionGoodAnswer);
+
+                db.insertOrThrow(TABLE_QUESTION, null, values);
+                db.setTransactionSuccessful();
+
         } catch (Exception e) {
             Log.d("Error", "insert fail");
         } finally {
@@ -134,7 +141,7 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
                 do {
                     Question newQuestion = new Question(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_TITLE)));
 
-                    newQuestion.setQuestionId(cursor.getLong(cursor.getColumnIndex(KEY_QUESTION_ID)));
+                    newQuestion.setQuestionId(cursor.getInt(cursor.getColumnIndex(KEY_QUESTION_ID)));
 
                     newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER1)));
                     newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER2)));
@@ -171,7 +178,7 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
                 do {
                     Question newQuestion = new Question(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_TITLE)));
 
-                    newQuestion.setQuestionId(cursor.getLong(cursor.getColumnIndex(KEY_QUESTION_ID)));
+                    newQuestion.setQuestionId(cursor.getInt(cursor.getColumnIndex(KEY_QUESTION_ID)));
                     newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER1)));
                     newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER2)));
                     newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER3)));
@@ -191,5 +198,38 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
         }
 
         return questionList;
+    }
+
+    public Question getQuestion(int id){
+        Question question = new Question();
+
+        String QUESTIONS_SELECT_QUERY =
+                String.format("SELECT * FROM %s WHERE %s = %s", TABLE_QUESTION,KEY_QUESTION_ID, id);
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(QUESTIONS_SELECT_QUERY, null);
+        try {
+            if (cursor.moveToFirst()) {
+                    Question newQuestion = new Question(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_TITLE)));
+
+                    newQuestion.setQuestionId(cursor.getInt(cursor.getColumnIndex(KEY_QUESTION_ID)));
+                    newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER1)));
+                    newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER2)));
+                    newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER3)));
+                    newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER4)));
+
+                    newQuestion.setGoodResponse(cursor.getInt(cursor.getColumnIndex(KEY_QUESTION_GOOD_ANSWER)));
+
+
+                    newQuestion.setUserResponse(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_USER_ANSWER)));
+                    question = newQuestion;
+            }
+        } catch (Exception e) {
+            Log.e("Error", "Fail to select");
+        } finally {
+            cursor.close();
+        }
+        return question;
     }
 }

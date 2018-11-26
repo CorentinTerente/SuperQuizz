@@ -10,9 +10,9 @@ import java.util.ArrayList;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class Question implements Parcelable {
 
-	private long questionId;
+	private int questionId;
 	private String title;
-	private ArrayList<String> propositions;
+	private ArrayList<String> propositions = new ArrayList<>();
 	private int goodResponse;
 	private TypeQuestion questionType;
 	private String userResponse;
@@ -22,6 +22,7 @@ public class Question implements Parcelable {
 		this.propositions = new ArrayList<>();
 	}
 
+	public Question(){}
 
 	protected Question(Parcel in) {
 		title = in.readString();
@@ -61,11 +62,11 @@ public class Question implements Parcelable {
 			
 	}
 
-    public long getQuestionId() {
+    public int getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(long questionId) {
+    public void setQuestionId(int questionId) {
         this.questionId = questionId;
     }
 
