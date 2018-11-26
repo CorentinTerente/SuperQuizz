@@ -108,5 +108,7 @@ public class QuestionListFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
 
         void onQuestionListSelected(Question item);
+
+        void OnQuestionLongPressed(Question mItem);
     }
 }

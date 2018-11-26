@@ -16,6 +16,7 @@ public class Question implements Parcelable {
 	private int goodResponse;
 	private TypeQuestion questionType;
 	private String userResponse;
+    private String imageUrl;
 	
 	public Question(String title) {
 		this.title = title;
@@ -97,6 +98,14 @@ public class Question implements Parcelable {
 	public void setQuestionType(TypeQuestion questionType) {
 		this.questionType = questionType;
 	}
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
 
 	@Override

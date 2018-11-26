@@ -47,6 +47,10 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                     }
                 }
         );
+        holder.mView.setOnLongClickListener(v->{
+            mListener.OnQuestionLongPressed(holder.mItem);
+            return  true;
+        });
     }
 
     @Override
@@ -54,7 +58,6 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
         return mValues.size();
     }
 
-    @SuppressWarnings("WeakerAccess")
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
 

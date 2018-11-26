@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
 
             Toast loadToast = Toast.makeText(this,"Can't load questions from server",Toast.LENGTH_SHORT);
-            Toast alreadyExistsToast = Toast.makeText(this,"Question already exists",Toast.LENGTH_SHORT);
             APIClient client = APIClient.getInstance();
 
             client.getQuestions(new APIClient.APIResult<List<Question>>() {
@@ -62,14 +61,8 @@ public class MainActivity extends AppCompatActivity
 
                 @Override
                 public void OnSuccess(List<Question> object) throws IOException {
-                    for(Question newQuestion : object) {
-                        try {
-                            QuestionsDatabaseHelper.getInstance(getApplicationContext()).addQuestion(newQuestion);
-                        } catch (Exception  e) {
-                            alreadyExistsToast.show();
-                        }
-
-                    }
+                    QuestionsDatabaseHelper dbHelper= QuestionsDatabaseHelper.getInstance(getApplicationContext());
+                    dbHelper.synchroniseDatabaseQuestions(object);
                 }
             });
 
@@ -164,6 +157,28 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(MainActivity.this,QuestionActivity.class);
         intent.putExtra("question",item);
         startActivity(intent);
+    }
+
+    @Override
+    public void OnQuestionLongPressed(Question mItem) {
+        APIClient client = APIClient.getInstance();
+        QuestionsDatabaseHelper dbHelper = QuestionsDatabaseHelper.getInstance(this);
+
+        client.deleteQuestion(new APIClient.APIResult<Question>(){
+        @Override
+        public void onFailure(IOException e) {
+            Toast toast = Toast.makeText(getApplicationContext(),"Can't delete quesiton",Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+        @Override
+        public void OnSuccess(Question object) throws IOException {
+            dbHelper.deleteQuestion(mItem);
+        }
+    },mItem);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout_fragment_container,QuestionListFragment.newInstance(1))
+                .commit();
     }
 
     @Override

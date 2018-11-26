@@ -71,7 +71,7 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
 
     public void addQuestion(Question newQuestion) throws Exception {
 
-        if(newQuestion.getQuestionId() == this.getQuestion(newQuestion.getQuestionId()).getQuestionId()) {
+        if (newQuestion.getQuestionId() == this.getQuestion(newQuestion.getQuestionId()).getQuestionId()) {
             throw new Exception("already exists");
         }
 
@@ -81,23 +81,23 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
 
-                String questionTitle = newQuestion.getTitle();
-                String questionAnswer1 = newQuestion.getPropositions().get(0);
-                String questionAnswer2 = newQuestion.getPropositions().get(1);
-                String questionAnswer3 = newQuestion.getPropositions().get(2);
-                String questionAnswer4 = newQuestion.getPropositions().get(3);
-                int questionGoodAnswer = newQuestion.getGoodResponse();
+            String questionTitle = newQuestion.getTitle();
+            String questionAnswer1 = newQuestion.getPropositions().get(0);
+            String questionAnswer2 = newQuestion.getPropositions().get(1);
+            String questionAnswer3 = newQuestion.getPropositions().get(2);
+            String questionAnswer4 = newQuestion.getPropositions().get(3);
+            int questionGoodAnswer = newQuestion.getGoodResponse();
 
-                ContentValues values = new ContentValues();
-                values.put(KEY_QUESTION_TITLE, questionTitle);
-                values.put(KEY_QUESTION_ANSWER1, questionAnswer1);
-                values.put(KEY_QUESTION_ANSWER2, questionAnswer2);
-                values.put(KEY_QUESTION_ANSWER3, questionAnswer3);
-                values.put(KEY_QUESTION_ANSWER4, questionAnswer4);
-                values.put(KEY_QUESTION_GOOD_ANSWER, questionGoodAnswer);
+            ContentValues values = new ContentValues();
+            values.put(KEY_QUESTION_TITLE, questionTitle);
+            values.put(KEY_QUESTION_ANSWER1, questionAnswer1);
+            values.put(KEY_QUESTION_ANSWER2, questionAnswer2);
+            values.put(KEY_QUESTION_ANSWER3, questionAnswer3);
+            values.put(KEY_QUESTION_ANSWER4, questionAnswer4);
+            values.put(KEY_QUESTION_GOOD_ANSWER, questionGoodAnswer);
 
-                db.insertOrThrow(TABLE_QUESTION, null, values);
-                db.setTransactionSuccessful();
+            db.insertOrThrow(TABLE_QUESTION, null, values);
+            db.setTransactionSuccessful();
 
         } catch (Exception e) {
             Log.d("Error", "insert fail");
@@ -105,6 +105,22 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
             db.endTransaction();
         }
     }
+
+    public void deleteQuestion(Question q) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+        try {
+            db.delete(TABLE_QUESTION, KEY_QUESTION_ID + " = ?", new String[]{String.valueOf(q.getQuestionId())});
+            db.setTransactionSuccessful();
+
+        } catch (Exception e) {
+
+        } finally {
+            db.endTransaction();
+        }
+    }
+
 
     public void updateQuestion(Question questionAnswered) {
 
@@ -116,6 +132,12 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
             long questionId = questionAnswered.getQuestionId();
             ContentValues values = new ContentValues();
             values.put(KEY_QUESTION_USER_ANSWER, userAnswer);
+            values.put(KEY_QUESTION_GOOD_ANSWER, questionAnswered.getGoodResponse());
+            values.put(KEY_QUESTION_ANSWER1, questionAnswered.getPropositions().get(0));
+            values.put(KEY_QUESTION_ANSWER1, questionAnswered.getPropositions().get(1));
+            values.put(KEY_QUESTION_ANSWER1, questionAnswered.getPropositions().get(2));
+            values.put(KEY_QUESTION_ANSWER1, questionAnswered.getPropositions().get(3));
+            values.put(KEY_QUESTION_TITLE, questionAnswered.getTitle());
 
             db.update(TABLE_QUESTION, values, KEY_QUESTION_ID + " = ?", new String[]{String.valueOf(questionId)});
 
@@ -200,30 +222,30 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
         return questionList;
     }
 
-    public Question getQuestion(int id){
+    public Question getQuestion(int id) {
         Question question = new Question();
 
         String QUESTIONS_SELECT_QUERY =
-                String.format("SELECT * FROM %s WHERE %s = %s", TABLE_QUESTION,KEY_QUESTION_ID, id);
+                String.format("SELECT * FROM %s WHERE %s = %s", TABLE_QUESTION, KEY_QUESTION_ID, id);
 
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.rawQuery(QUESTIONS_SELECT_QUERY, null);
         try {
             if (cursor.moveToFirst()) {
-                    Question newQuestion = new Question(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_TITLE)));
+                Question newQuestion = new Question(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_TITLE)));
 
-                    newQuestion.setQuestionId(cursor.getInt(cursor.getColumnIndex(KEY_QUESTION_ID)));
-                    newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER1)));
-                    newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER2)));
-                    newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER3)));
-                    newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER4)));
+                newQuestion.setQuestionId(cursor.getInt(cursor.getColumnIndex(KEY_QUESTION_ID)));
+                newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER1)));
+                newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER2)));
+                newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER3)));
+                newQuestion.getPropositions().add(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_ANSWER4)));
 
-                    newQuestion.setGoodResponse(cursor.getInt(cursor.getColumnIndex(KEY_QUESTION_GOOD_ANSWER)));
+                newQuestion.setGoodResponse(cursor.getInt(cursor.getColumnIndex(KEY_QUESTION_GOOD_ANSWER)));
 
 
-                    newQuestion.setUserResponse(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_USER_ANSWER)));
-                    question = newQuestion;
+                newQuestion.setUserResponse(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_USER_ANSWER)));
+                question = newQuestion;
             }
         } catch (Exception e) {
             Log.e("Error", "Fail to select");
@@ -231,5 +253,49 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         return question;
+    }
+
+
+    public void synchroniseDatabaseQuestions(List<Question> serverQuestions) {
+
+
+        List<Question> databaseQuestions = getAllQuestion();
+
+
+        // Here we will choose if we need to add or to update the question return by the server
+        for (Question serverQuestion : serverQuestions) {
+            boolean found = false;
+            for (Question dataBaseQuestion : databaseQuestions) {
+                if (serverQuestion.getQuestionId() == dataBaseQuestion.getQuestionId()) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                updateQuestion(serverQuestion);
+            } else {
+                try {
+                    addQuestion(serverQuestion);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // Now we want to delete the question if thy are not on the server anymore
+        for (Question dataBaseQuestion : databaseQuestions) {
+            boolean found = false;
+            for (Question serverQuestion : serverQuestions) {
+                if (serverQuestion.getQuestionId() == dataBaseQuestion.getQuestionId()) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                deleteQuestion(dataBaseQuestion);
+            }
+        }
     }
 }

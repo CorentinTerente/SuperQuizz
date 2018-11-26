@@ -1,6 +1,10 @@
 package com.example.formation2.superquizz.ui.fragments;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.formation2.superquizz.R;
 import com.example.formation2.superquizz.model.Question;
+import com.example.formation2.superquizz.ui.NetworkChangeReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,7 @@ public class CreateFragment extends Fragment {
     private RadioButton checkedButton ,rButton1, rButton2, rButton3, rButton4;
     private EditText editTextProposition1, editTextProposition2, editTextProposition3, editTextProposition4, editTextTitle;
     public OnCreateListener listener;
+    FloatingActionButton fabValidate;
 
     public CreateFragment() {
         // Required empty public constructor
@@ -38,6 +44,8 @@ public class CreateFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        registerReceiver();
 
     }
 
@@ -51,7 +59,7 @@ public class CreateFragment extends Fragment {
          rButton2 = rootView.findViewById(R.id.radio_button_proposition2);
          rButton3 = rootView.findViewById(R.id.radio_button_proposition3);
          rButton4 = rootView.findViewById(R.id.radio_button_proposition4);
-         FloatingActionButton fabValidate = rootView.findViewById(R.id.fab_validate);
+         fabValidate = rootView.findViewById(R.id.fab_validate);
 
          editTextProposition1 = rootView.findViewById(R.id.edit_text_proposition1);
          editTextProposition2 = rootView.findViewById(R.id.edit_text_proposition2);
@@ -66,7 +74,6 @@ public class CreateFragment extends Fragment {
         rButton3.setOnClickListener(rButtonListener);
         rButton4.setOnClickListener(rButtonListener);
         fabValidate.setOnClickListener(fabListener);
-
 
         return rootView;
     }
@@ -132,7 +139,6 @@ public class CreateFragment extends Fragment {
             listener.questionCreated(newQuestion);
         }
 
-        //TODO: send to DB
     };
 
     public interface OnCreateListener {
@@ -146,4 +152,56 @@ public class CreateFragment extends Fragment {
 
         listener = null;
     }
+
+    private void registerReceiver()
+    {
+        try
+        {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(NetworkChangeReceiver.NETWORK_CHANGE_ACTION);
+            getActivity().registerReceiver(internalNetworkChangeReceiver, intentFilter);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        try
+        {
+            // Make sure to unregister internal receiver in onDestroy().
+            getActivity().unregisterReceiver(internalNetworkChangeReceiver);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        super.onDestroy();
+    }
+
+    InternalNetworkChangeReceiver internalNetworkChangeReceiver = new InternalNetworkChangeReceiver();
+
+    class InternalNetworkChangeReceiver extends BroadcastReceiver
+    {
+        private boolean previousValue;
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean currentValue = intent.getBooleanExtra("isOnline",false);
+
+            if(!currentValue && currentValue !=previousValue){
+              Toast offlineToast = Toast.makeText(getContext(),"No Internet connection",Toast.LENGTH_SHORT);
+              offlineToast.show();
+              previousValue = currentValue;
+            } else if(currentValue != previousValue) {
+                Toast onlineToast = Toast.makeText(getContext(),"Your are online", Toast.LENGTH_SHORT);
+                onlineToast.show();
+                previousValue=currentValue;
+            }
+
+        }
+    }
+
 }
