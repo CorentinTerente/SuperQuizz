@@ -15,7 +15,7 @@ import java.util.List;
 public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "questionDatabase";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String TABLE_QUESTION = "question";
 
@@ -27,6 +27,8 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_QUESTION_ANSWER4 = "answer4";
     private static final String KEY_QUESTION_GOOD_ANSWER = "good_answer";
     private static final String KEY_QUESTION_USER_ANSWER = "user_answer";
+    private static final String KEY_QUESTION_URL_IMG = "author_img_url";
+    private static final String KEY_QUESTION_HAVE_RESPOND = "have_respond";
 
     private static QuestionsDatabaseHelper instance;
 
@@ -55,7 +57,9 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
                 KEY_QUESTION_ANSWER3 + " TEXT," +
                 KEY_QUESTION_ANSWER4 + " TEXT," +
                 KEY_QUESTION_GOOD_ANSWER + " INTEGER," +
-                KEY_QUESTION_USER_ANSWER + " TEXT" +
+                KEY_QUESTION_USER_ANSWER + " TEXT," +
+                KEY_QUESTION_URL_IMG + " TEXT," +
+                KEY_QUESTION_HAVE_RESPOND + " INTEGER" +
                 ")";
 
         db.execSQL(CREATE_TABLE_QUESTION);
@@ -128,16 +132,44 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
 
         db.beginTransaction();
         try {
+            int questionId = questionAnswered.getQuestionId();
+            ContentValues values = new ContentValues();
+            values.put(KEY_QUESTION_GOOD_ANSWER, questionAnswered.getGoodResponse());
+            values.put(KEY_QUESTION_ANSWER1, questionAnswered.getPropositions().get(0));
+            values.put(KEY_QUESTION_ANSWER2, questionAnswered.getPropositions().get(1));
+            values.put(KEY_QUESTION_ANSWER3, questionAnswered.getPropositions().get(2));
+            values.put(KEY_QUESTION_ANSWER4, questionAnswered.getPropositions().get(3));
+            values.put(KEY_QUESTION_TITLE, questionAnswered.getTitle());
+
+
+            db.update(TABLE_QUESTION, values, KEY_QUESTION_ID + " = ?", new String[]{String.valueOf(questionId)});
+
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e("Error", "Update fail");
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public void updateQuestionAnswered(Question questionAnswered) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+        try {
             String userAnswer = questionAnswered.getUserResponse();
-            long questionId = questionAnswered.getQuestionId();
+            int questionId = questionAnswered.getQuestionId();
             ContentValues values = new ContentValues();
             values.put(KEY_QUESTION_USER_ANSWER, userAnswer);
             values.put(KEY_QUESTION_GOOD_ANSWER, questionAnswered.getGoodResponse());
             values.put(KEY_QUESTION_ANSWER1, questionAnswered.getPropositions().get(0));
-            values.put(KEY_QUESTION_ANSWER1, questionAnswered.getPropositions().get(1));
-            values.put(KEY_QUESTION_ANSWER1, questionAnswered.getPropositions().get(2));
-            values.put(KEY_QUESTION_ANSWER1, questionAnswered.getPropositions().get(3));
+            values.put(KEY_QUESTION_ANSWER2, questionAnswered.getPropositions().get(1));
+            values.put(KEY_QUESTION_ANSWER3, questionAnswered.getPropositions().get(2));
+            values.put(KEY_QUESTION_ANSWER4, questionAnswered.getPropositions().get(3));
             values.put(KEY_QUESTION_TITLE, questionAnswered.getTitle());
+            values.put(KEY_QUESTION_HAVE_RESPOND,questionAnswered.getHaveRespond());
+
 
             db.update(TABLE_QUESTION, values, KEY_QUESTION_ID + " = ?", new String[]{String.valueOf(questionId)});
 
@@ -173,7 +205,7 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
                     newQuestion.setGoodResponse(cursor.getInt(cursor.getColumnIndex(KEY_QUESTION_GOOD_ANSWER)));
 
                     newQuestion.setUserResponse(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_USER_ANSWER)));
-
+                    newQuestion.setHaveRespond(cursor.getInt(cursor.getColumnIndex(KEY_QUESTION_HAVE_RESPOND)));
                     questionList.add(newQuestion);
                 } while (cursor.moveToNext());
             }
@@ -210,6 +242,7 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
 
 
                     newQuestion.setUserResponse(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_USER_ANSWER)));
+                    newQuestion.setImageUrl(cursor.getString(cursor.getColumnIndex(KEY_QUESTION_URL_IMG)));
                     questionList.add(newQuestion);
                 } while (cursor.moveToNext());
             }

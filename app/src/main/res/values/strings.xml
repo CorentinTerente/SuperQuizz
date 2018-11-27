@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SuperQuizz</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -31,4 +31,7 @@
     <string name="question_title">Question Title</string>
     <string name="question_response_proposition">Question Response Proposition</string>
     <string name="base_url">http://192.168.10.38:3000</string>
+    <string name="pie_chart_good_answer">Bonnes réponses</string>
+    <string name="pie_chart_wrong_answer">Mauvaises réponses</string>
+    <string name="pie_chart_todo_questions">A faire</string>
 </resources>

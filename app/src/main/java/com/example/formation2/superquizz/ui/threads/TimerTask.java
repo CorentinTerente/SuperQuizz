@@ -4,11 +4,11 @@ import android.os.AsyncTask;
 import android.os.SystemClock;
 
 
-public class DelayTask extends AsyncTask<Void, Integer, String> {
+public class TimerTask extends AsyncTask<Void, Integer, String> {
     int count = 0;
     private OnDelayTaskListener listener;
 
-    public DelayTask(OnDelayTaskListener listener){
+    public TimerTask(OnDelayTaskListener listener){
         super();
         this.listener = listener;
     }

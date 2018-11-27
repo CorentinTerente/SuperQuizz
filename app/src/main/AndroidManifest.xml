@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.example.formation2.superquizz.ui.NetworkChangeReceiver" >
+        <receiver android:name="com.example.formation2.superquizz.broadcast.NetworkChangeReceiver" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.STATE_CHANGE" />

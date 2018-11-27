@@ -1,11 +1,10 @@
 package com.example.formation2.superquizz.ui.activities;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.os.AsyncTask;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -16,20 +15,21 @@ import android.widget.TextView;
 import com.example.formation2.superquizz.R;
 import com.example.formation2.superquizz.database.QuestionsDatabaseHelper;
 import com.example.formation2.superquizz.model.Question;
-import com.example.formation2.superquizz.ui.threads.DelayTask;
+import com.example.formation2.superquizz.ui.threads.TimerTask;
 
 import java.util.List;
 
-public class QuestionActivity extends AppCompatActivity implements DelayTask.OnDelayTaskListener {
+public class QuestionActivity extends AppCompatActivity implements TimerTask.OnDelayTaskListener {
 
-    private DelayTask delayProgressBar = new DelayTask(this);
+    private TimerTask delayProgressBar = new TimerTask(this);
     private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
         TextView textViewTitle = findViewById(R.id.text_view_question_title);
-        Question aQuestion = getIntent().getParcelableExtra("question");
+        QuestionsDatabaseHelper dbHelper = QuestionsDatabaseHelper.getInstance(this);
+        Question aQuestion = dbHelper.getQuestion(getIntent().getIntExtra("question",0));
         progressBar = findViewById(R.id.progress_bar);
 
         LinearLayout questionButtonLayout1 = findViewById(R.id.linear_layout_button_1row);
@@ -42,8 +42,13 @@ public class QuestionActivity extends AppCompatActivity implements DelayTask.OnD
         View.OnClickListener questionButtonListener =  v -> {
             String response = ((Button)v).getText().toString();
             aQuestion.setUserResponse(response);
-            QuestionsDatabaseHelper questionDb = QuestionsDatabaseHelper.getInstance(this);
-            questionDb.updateQuestion(aQuestion);
+            aQuestion.setHaveRespond(1);
+
+            SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean saveAnswer = mSettings.getBoolean("saveAnswer",true);
+            if (saveAnswer) {
+                dbHelper.updateQuestionAnswered(aQuestion);
+            }
             if(aQuestion.verifyResponse(response)) {
                 Intent intentSuccess= new Intent(QuestionActivity.this, AnswerActivity.class);
                 intentSuccess.putExtra("isCorrect",true);
@@ -70,22 +75,22 @@ public class QuestionActivity extends AppCompatActivity implements DelayTask.OnD
 
             switch(propositionsList.indexOf(proposition)){
                 case 0 :
-                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.red,null));
-                    buttonQuestion.setTextColor(getResources().getColor(R.color.white,null));
+                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.primaryLightColor,null));
+                    buttonQuestion.setTextColor(Color.BLACK);
                     questionButtonLayout1.addView(buttonQuestion);
                 break;
                 case 1 :
-                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.blue,null));
+                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.secondaryDarkColor,null));
                     buttonQuestion.setTextColor(getResources().getColor(R.color.white,null));
                     questionButtonLayout1.addView(buttonQuestion);
                     break;
                 case 2 :
-                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.green,null));
+                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.secondaryDarkColor,null));
                     buttonQuestion.setTextColor(getResources().getColor(R.color.white,null));
                     questionButtonLayout2.addView(buttonQuestion);
                     break;
                 case 3 :
-                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.purple,null));
+                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.primaryDarkColor,null));
                     buttonQuestion.setTextColor(getResources().getColor(R.color.white,null));
                     questionButtonLayout2.addView(buttonQuestion);
             }
@@ -102,6 +107,10 @@ public class QuestionActivity extends AppCompatActivity implements DelayTask.OnD
     @Override
     public void onFinishTask() {
 
+
+        Intent intentFail = new Intent(QuestionActivity.this, AnswerActivity.class);
+        intentFail.putExtra("isCorrect",false);
+        startActivity(intentFail);
     }
 
     @Override

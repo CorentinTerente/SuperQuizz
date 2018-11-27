@@ -13,12 +13,8 @@
         android:text="@string/actual_score_text"
         android:textSize="50sp"
         android:textAlignment="center"/>
-    <TextView
-        android:id="@+id/text_view_score"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/actual_score_default_value"
-        android:textSize="50sp"
-        android:textAlignment="center"/>
-
+        android:layout_height="match_parent"/>
 </LinearLayout>

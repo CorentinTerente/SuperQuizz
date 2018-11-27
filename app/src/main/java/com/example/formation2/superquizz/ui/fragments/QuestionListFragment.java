@@ -10,12 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.formation2.superquizz.R;
+import com.example.formation2.superquizz.api.APIClient;
 import com.example.formation2.superquizz.database.QuestionsDatabaseHelper;
 import com.example.formation2.superquizz.model.Question;
 import com.example.formation2.superquizz.ui.adapter.QuestionRecyclerViewAdapter;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -61,8 +64,23 @@ public class QuestionListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question_list, container, false);
-        QuestionsDatabaseHelper questionDb = QuestionsDatabaseHelper.getInstance(this.getContext());
-        List<Question> questionList = questionDb.getUnAnsweredQuestion();
+        Toast loadToast = Toast.makeText(this.getContext(),"Can't load questions from server",Toast.LENGTH_SHORT);
+        APIClient client = APIClient.getInstance();
+
+        client.getQuestions(new APIClient.APIResult<List<Question>>() {
+            @Override
+            public void onFailure(IOException e) {
+                loadToast.show();
+            }
+
+            @Override
+            public void OnSuccess(List<Question> object) throws IOException {
+                QuestionsDatabaseHelper dbHelper= QuestionsDatabaseHelper.getInstance(getContext());
+                dbHelper.synchroniseDatabaseQuestions(object);
+            }
+        });
+        QuestionsDatabaseHelper dbHelper = QuestionsDatabaseHelper.getInstance(this.getContext());
+        List<Question> questionList = dbHelper.getAllQuestion();
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();

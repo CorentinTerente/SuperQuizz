@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.example.formation2.superquizz.R;
 import com.example.formation2.superquizz.model.Question;
-import com.example.formation2.superquizz.ui.NetworkChangeReceiver;
+import com.example.formation2.superquizz.broadcast.NetworkChangeReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +90,7 @@ public class CreateFragment extends Fragment {
 
     private View.OnClickListener fabListener = v -> {
         boolean nothingChecked = false;
+        boolean isEmpty = false;
         Toast toastChecked = Toast.makeText(this.getContext(),getString(R.string.toast_checked), Toast.LENGTH_SHORT);
         Toast toastEmpty = Toast.makeText(this.getContext(),getString(R.string.toast_empty), Toast.LENGTH_SHORT);
         List<String> stringsList = new ArrayList<>();
@@ -107,6 +108,7 @@ public class CreateFragment extends Fragment {
         for(String aString : stringsList){
             if(aString.isEmpty()){
                 toastEmpty.show();
+                isEmpty = true;
             }
         }
 
@@ -133,7 +135,7 @@ public class CreateFragment extends Fragment {
             }
 
 
-        if(nothingChecked) {
+        if(nothingChecked || isEmpty) {
             toastChecked.show();
         } else {
             listener.questionCreated(newQuestion);

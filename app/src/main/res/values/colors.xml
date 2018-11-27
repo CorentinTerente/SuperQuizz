@@ -8,4 +8,15 @@
     <color name="green">#006C0B</color>
     <color name="white">#FEFEFE</color>
     <color name="purple">#520082</color>
+
+    <color name="primaryColor">#008577</color>
+    <color name="primaryLightColor">#4cb5a6</color>
+    <color name="primaryDarkColor">#00574b</color>
+    <color name="secondaryColor">#d81b60</color>
+    <color name="secondaryLightColor">#ff5c8d</color>
+    <color name="secondaryDarkColor">#a00037</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
+
+
 </resources>

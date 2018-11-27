@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setTitle("SuperQuizz");
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onQuestionListSelected(Question item) {
         Intent intent = new Intent(MainActivity.this,QuestionActivity.class);
-        intent.putExtra("question",item);
+        intent.putExtra("question",item.getQuestionId());
         startActivity(intent);
     }
 

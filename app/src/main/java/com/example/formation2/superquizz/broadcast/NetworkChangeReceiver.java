@@ -1,4 +1,4 @@
-package com.example.formation2.superquizz.ui;
+package com.example.formation2.superquizz.broadcast;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
