@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 public class NetworkChangeReceiver  extends BroadcastReceiver {
 
@@ -27,6 +28,7 @@ public class NetworkChangeReceiver  extends BroadcastReceiver {
     {
         try
         {
+            Log.e("BROADCAST_RECEIVED",""+isOnline(context));
             boolean isOnline = isOnline(context);
             Intent intent = new Intent();
             intent.putExtra("isOnline", isOnline);

@@ -7,14 +7,13 @@ import java.util.ArrayList;
 
 
 
-@SuppressWarnings({"WeakerAccess", "unused"})
+
 public class Question implements Parcelable {
 
 	private int questionId;
 	private String title;
 	private ArrayList<String> propositions = new ArrayList<>();
 	private int goodResponse;
-	private TypeQuestion questionType;
 	private String userResponse;
     private String imageUrl;
     private int haveRespond = 0;
@@ -26,24 +25,6 @@ public class Question implements Parcelable {
 
 	public Question(){}
 
-	protected Question(Parcel in) {
-		title = in.readString();
-		propositions = in.createStringArrayList();
-		goodResponse = in.readInt();
-	}
-
-	public static final Creator<Question> CREATOR = new Creator<Question>() {
-		@Override
-		public Question createFromParcel(Parcel in) {
-			return new Question(in);
-		}
-
-		@Override
-		public Question[] newArray(int size) {
-			return new Question[size];
-		}
-	};
-
 	public String getTitle() {
 		return title;
 	}
@@ -52,9 +33,6 @@ public class Question implements Parcelable {
 	}
 	public ArrayList<String> getPropositions() {
 		return propositions;
-	}
-	public void setPropositions(ArrayList<String> propositions) {
-		this.propositions = propositions;
 	}
 	public int getGoodResponse() {
 		return goodResponse;
@@ -89,17 +67,6 @@ public class Question implements Parcelable {
 	}
 
 
-
-	public TypeQuestion getQuestionType() {
-		return questionType;
-	}
-
-
-
-	public void setQuestionType(TypeQuestion questionType) {
-		this.questionType = questionType;
-	}
-
     public String getImageUrl() {
         return imageUrl;
     }
@@ -127,4 +94,24 @@ public class Question implements Parcelable {
 		dest.writeStringList(propositions);
 		dest.writeInt(goodResponse);
 	}
+
+
+    protected Question(Parcel in) {
+        title = in.readString();
+        propositions = in.createStringArrayList();
+        goodResponse = in.readInt();
+    }
+
+    public static final Creator<Question> CREATOR = new Creator<Question>() {
+        @Override
+        public Question createFromParcel(Parcel in) {
+            return new Question(in);
+        }
+
+        @Override
+        public Question[] newArray(int size) {
+            return new Question[size];
+        }
+    };
+
 }

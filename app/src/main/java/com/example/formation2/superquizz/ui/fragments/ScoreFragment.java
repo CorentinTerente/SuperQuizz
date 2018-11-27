@@ -24,17 +24,9 @@ import com.github.mikephil.charting.utils.MPPointF;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- */
-@SuppressWarnings("EmptyMethod")
+
 public class ScoreFragment extends Fragment {
 
-
-    public ScoreFragment() {
-        // Required empty public constructor
-    }
 
 
     private PieChart chart;
@@ -90,19 +82,6 @@ public class ScoreFragment extends Fragment {
         return rootView;
     }
 
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-    }
 
 
     private void updateChart() {

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -31,8 +30,7 @@ public class APIClient {
     private final String KEY_QUESTION_AUTHOR = "author";
     private final MediaType JSON_TYPE = MediaType.parse("application/json");
 
-    private String baseUrl = "http://192.168.10.38:3000";
-    private String localUrl = "http://192.168.10.213:3000";
+    private final String BASE_URL = "http://192.168.10.213:3000";
 
     private static APIClient sInstance = new APIClient();
 
@@ -43,7 +41,7 @@ public class APIClient {
     public void getQuestions(final APIResult<List<Question>> result) {
 
         Request request = new Request.Builder()
-                .url(localUrl+"/questions/")
+                .url(BASE_URL +"/questions/")
                 .build();
 
 
@@ -96,7 +94,7 @@ public class APIClient {
         }
 
         Request request = new Request.Builder()
-                .url(localUrl+"/questions").method("PUT", RequestBody.create(JSON_TYPE,json.toString()))
+                .url(BASE_URL +"/questions").method("PUT", RequestBody.create(JSON_TYPE,json.toString()))
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -136,7 +134,7 @@ public class APIClient {
         }
 
         Request request = new Request.Builder()
-                .url(localUrl+"/questions/"+q.getQuestionId()).delete()
+                .url(BASE_URL +"/questions/"+q.getQuestionId()).delete()
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -163,7 +161,7 @@ public class APIClient {
 
 
         Request request = new Request.Builder()
-                .url(localUrl+"/questions").method("POST", RequestBody.create(JSON_TYPE,json.toString()))
+                .url(BASE_URL +"/questions").method("POST", RequestBody.create(JSON_TYPE,json.toString()))
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override

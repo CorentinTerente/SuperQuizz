@@ -23,6 +23,7 @@ public class QuestionActivity extends AppCompatActivity implements TimerTask.OnD
 
     private TimerTask delayProgressBar = new TimerTask(this);
     private ProgressBar progressBar;
+    private Button buttonAnswer1, buttonAnswer2, buttonAnswer3, buttonAnswer4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +33,11 @@ public class QuestionActivity extends AppCompatActivity implements TimerTask.OnD
         Question aQuestion = dbHelper.getQuestion(getIntent().getIntExtra("question",0));
         progressBar = findViewById(R.id.progress_bar);
 
-        LinearLayout questionButtonLayout1 = findViewById(R.id.linear_layout_button_1row);
-        LinearLayout questionButtonLayout2 = findViewById(R.id.linear_layout_button_2row);
+
+        buttonAnswer1 = findViewById(R.id.button_answer1);
+        buttonAnswer2 = findViewById(R.id.button_answer2);
+        buttonAnswer3 = findViewById(R.id.button_answer3);
+        buttonAnswer4 = findViewById(R.id.button_answer4);
 
 
         textViewTitle.setText(aQuestion.getTitle());
@@ -43,7 +47,7 @@ public class QuestionActivity extends AppCompatActivity implements TimerTask.OnD
             String response = ((Button)v).getText().toString();
             aQuestion.setUserResponse(response);
             aQuestion.setHaveRespond(1);
-
+            delayProgressBar.cancel(true);
             SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(this);
             boolean saveAnswer = mSettings.getBoolean("saveAnswer",true);
             if (saveAnswer) {
@@ -64,35 +68,26 @@ public class QuestionActivity extends AppCompatActivity implements TimerTask.OnD
 
         List<String> propositionsList = aQuestion.getPropositions();
 
-        // for each proposition generate a button with different color
         for(String proposition : propositionsList){
-
-            Button buttonQuestion = new Button(this);
-            buttonQuestion.setText(proposition);
-            buttonQuestion.setOnClickListener(questionButtonListener);
-            buttonQuestion.setWidth(250);
-            buttonQuestion.setHeight(250);
 
             switch(propositionsList.indexOf(proposition)){
                 case 0 :
-                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.primaryLightColor,null));
-                    buttonQuestion.setTextColor(Color.BLACK);
-                    questionButtonLayout1.addView(buttonQuestion);
+                    buttonAnswer1.setText(proposition);
+                    buttonAnswer1.setOnClickListener(questionButtonListener);
                 break;
                 case 1 :
-                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.secondaryDarkColor,null));
-                    buttonQuestion.setTextColor(getResources().getColor(R.color.white,null));
-                    questionButtonLayout1.addView(buttonQuestion);
+                    buttonAnswer2.setText(proposition);
+                    buttonAnswer2.setOnClickListener(questionButtonListener);
+
                     break;
                 case 2 :
-                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.secondaryDarkColor,null));
-                    buttonQuestion.setTextColor(getResources().getColor(R.color.white,null));
-                    questionButtonLayout2.addView(buttonQuestion);
+                    buttonAnswer3.setText(proposition);
+                    buttonAnswer3.setOnClickListener(questionButtonListener);
+
                     break;
                 case 3 :
-                    buttonQuestion.setBackgroundColor(getResources().getColor(R.color.primaryDarkColor,null));
-                    buttonQuestion.setTextColor(getResources().getColor(R.color.white,null));
-                    questionButtonLayout2.addView(buttonQuestion);
+                    buttonAnswer4.setText(proposition);
+                    buttonAnswer4.setOnClickListener(questionButtonListener);
             }
         }
     delayProgressBar.execute();
@@ -101,16 +96,16 @@ public class QuestionActivity extends AppCompatActivity implements TimerTask.OnD
 
     @Override
     public void onProgressTask(int progress) {
-        progressBar.setProgress(progress * 6);
+        progressBar.setProgress(progress);
     }
 
     @Override
     public void onFinishTask() {
-
-
-        Intent intentFail = new Intent(QuestionActivity.this, AnswerActivity.class);
-        intentFail.putExtra("isCorrect",false);
-        startActivity(intentFail);
+        if(!delayProgressBar.isCancelled()) {
+            Intent intentFail = new Intent(QuestionActivity.this, AnswerActivity.class);
+            intentFail.putExtra("isCorrect", false);
+            startActivity(intentFail);
+        }
     }
 
     @Override

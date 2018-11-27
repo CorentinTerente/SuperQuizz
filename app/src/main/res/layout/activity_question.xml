@@ -35,13 +35,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1"/>
+            android:layout_weight="1">
+            <Button
+                android:layout_width="@dimen/button_answer_width"
+                android:layout_height="@dimen/button_answer_height"
+                android:layout_gravity="center"
+                android:id="@+id/button_answer1"
+                android:background="@color/primaryColor"
+                android:textColor="@color/white"
+                android:layout_margin="5dp"/>
+            <Button
+                android:layout_width="@dimen/button_answer_width"
+                android:layout_height="@dimen/button_answer_height"
+                android:id="@+id/button_answer2"
+                android:background="@color/primaryColor"
+                android:textColor="@color/white"
+                android:layout_margin="5dp"/>
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/linear_layout_button_2row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1"/>
+            android:layout_weight="1">
+            <Button
+                android:layout_width="@dimen/button_answer_width"
+                android:layout_height="@dimen/button_answer_height"
+                android:id="@+id/button_answer3"
+                android:background="@color/primaryColor"
+                android:textColor="@color/white"
+                android:layout_margin="5dp"/>
+            <Button
+                android:layout_width="@dimen/button_answer_width"
+                android:layout_height="@dimen/button_answer_height"
+                android:id="@+id/button_answer4"
+                android:background="@color/primaryColor"
+                android:textColor="@color/white"
+                android:layout_margin="5dp"/>
+        </LinearLayout>
     </LinearLayout>
 
 

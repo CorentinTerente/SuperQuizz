@@ -1,5 +1,6 @@
 package com.example.formation2.superquizz.ui.threads;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 
@@ -20,18 +21,28 @@ public class TimerTask extends AsyncTask<Void, Integer, String> {
 
     @Override
     protected String doInBackground(Void... params) {
-        while (count < 60) {
-            SystemClock.sleep(1000);
-            count++;
-            publishProgress(count * 5);
-        }
-        listener.onFinishTask();
+
+            while (count < 60) {
+                if(isCancelled()){
+                    break;
+                } else {
+                    SystemClock.sleep(1000);
+                    count++;
+                    publishProgress(count * 5);
+                }
+            }
+
         return "Complete";
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
         listener.onProgressTask(values[0]);
+    }
+
+    @Override
+    protected void onPostExecute(String result){
+        listener.onFinishTask();
     }
 
 
